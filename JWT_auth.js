@@ -31,7 +31,7 @@ app.post('/login', async (req, res) => {
     if (!user || !(await bcrypt.compare(password,user.password))) {
       return res.send('Not authorised');
     }
-     const token=jwt.sign({username:username},'test#secret')
+     const token=jwt.sign({username:username},'secret-key')
      res.json({token}) // token is sent back to the client in the response.
 
   });
@@ -40,7 +40,7 @@ app.post('/login', async (req, res) => {
 app.get('/dashboard', (req, res) => {
   try{
   const token=req.header('authorization') //keyname :authorization
-  const decodedtoken=jwt.verify(token,'test#secret')
+  const decodedtoken=jwt.verify(token,'secret-key')
   if(decodedtoken.username){
      res.send(`Welcome ${decodedtoken.username} to the dashboard`)
   }
@@ -54,4 +54,5 @@ app.get('/dashboard', (req, res) => {
   
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
+
   });
